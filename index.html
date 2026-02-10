@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bike & Cannabis Super Shop Krabi | Quality & Cheap</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        [x-cloak] { display: none !important; }
+        .hero-overlay { background: rgba(0, 0, 0, 0.6); }
+        
+        .animation-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-card {
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            position: absolute;
+            width: 220px;
+            z-index: 10;
+            opacity: 1;
+        }
+
+        @media (min-width: 768px) {
+            .photo-left { transform: translateX(0) rotate(-5deg); }
+            .photo-right { transform: translateX(0) rotate(5deg); }
+            .is-visible .photo-left { transform: translateX(-380px) rotate(-12deg); }
+            .is-visible .photo-right { transform: translateX(380px) rotate(12deg); }
+        }
+
+        @media (max-width: 767px) {
+            .photo-card { width: 150px; }
+            .photo-left { transform: translateY(0) rotate(-3deg); z-index: 5; opacity: 0; }
+            .photo-right { transform: translateY(0) rotate(3deg); z-index: 5; opacity: 0; }
+            .is-visible .photo-left { transform: translateY(-200px) rotate(-8deg); opacity: 1; }
+            .is-visible .photo-right { transform: translateY(200px) rotate(8deg); opacity: 1; }
+            .animation-container { height: 600px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans" x-data="languageManager()">
+
+    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <div class="font-black tracking-tighter text-xl">
+                <span class="text-white">BIG BIKE & </span><span class="text-green-500">CANNABIS</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex space-x-4 mr-4 border-r border-white/20 pr-4">
+                    <a :href="links.tiktok" target="_blank" class="hover:text-green-500 transition"><i class="fab fa-tiktok"></i></a>
+                    <a :href="links.instagram" target="_blank" class="hover:text-green-500 transition"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="flex space-x-1 bg-white/10 p-1 rounded-full">
+                    <template x-for="l in ['en', 'th', 'fr', 'de', 'es']">
+                        <button @click="setLang(l)" class="w-8 h-8 rounded-full overflow-hidden border-2 transition" :class="lang === l ? 'border-green-500' : 'border-transparent'">
+                            <img :src="'https://flagcdn.com/w40/' + (l === 'en' ? 'gb' : (l === 'de' ? 'de' : (l === 'fr' ? 'fr' : (l === 'es' ? 'es' : 'th')))) + '.png'" class="w-full h-full object-cover">
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-screen flex items-center justify-center text-center px-4 overflow-hidden">
+        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover object-[center_10%] z-0">
+            <source src="Hero Section.mp4" type="video/mp4">
+        </video>
+
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="relative z-20 max-w-4xl">
+            <div class="inline-block bg-green-600/20 text-green-400 px-4 py-1 rounded-full text-sm font-bold mb-6 border border-green-500/30">
+                <i class="fas fa-id-card-alt mr-2"></i> No Passport Required Option / Safe & Trusted
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase" x-text="t[lang].heroTitle"></h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-200" x-text="t[lang].heroSub"></p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a @click="openWA('scooter')" class="w-full md:w-auto bg-green-600 hover:bg-green-500 px-8 py-4 rounded-full font-bold text-lg transition cursor-pointer transform hover:scale-105">
+                    <i class="fab fa-whatsapp mr-2"></i> <span x-text="t[lang].btnRent"></span>
+                </a>
+                <button @click="copyLine()" class="w-full md:w-auto bg-green-500/80 hover:bg-green-500 px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105">
+                    <i class="fab fa-line mr-2"></i> <span x-text="t[lang].btnRent"></span>
+                </button>
+                <a href="#location" class="w-full md:w-auto bg-white/10 hover:bg-white/20 backdrop-blur px-8 py-4 rounded-full font-bold text-lg transition" x-text="t[lang].btnDirections"></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-12 px-4 bg-black/50">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+            <a href="#rent" class="p-6 bg-white/5 rounded-2xl border border-white/10 text-center hover:bg-green-600/20 transition">
+                <i class="fas fa-motorcycle text-3xl mb-3 text-green-500"></i>
+                <p class="font-bold uppercase text-xs" x-text="t[lang].srvBike"></p>
+            </a>
+            <a href="#chill" class="p-6 bg-white/5 rounded-2xl border border-white/10 text-center hover:bg-green-600/20 transition">
+                <i class="fas fa-leaf text-3xl mb-3 text-green-500"></i>
+                <p class="font-bold uppercase text-xs" x-text="t[lang].srvWeed"></p>
+            </a>
+            <a href="#laundry" class="p-6 bg-white/5 rounded-2xl border border-white/10 text-center hover:bg-green-600/20 transition">
+                <i class="fas fa-tshirt text-3xl mb-3 text-green-500"></i>
+                <p class="font-bold uppercase text-xs" x-text="t[lang].srvLaundry"></p>
+            </a>
+            <button @click="openWA('hotel')" class="p-6 bg-white/5 rounded-2xl border border-white/10 text-center hover:bg-green-600/20 transition">
+                <i class="fas fa-hotel text-3xl mb-3 text-green-500"></i>
+                <p class="font-bold uppercase text-xs" x-text="t[lang].srvHotel"></p>
+            </button>
+        </div>
+    </section>
+
+    <section id="rent" class="py-24 px-4 bg-white text-black text-center" x-data="{ showAll: false }">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-black uppercase mb-4" x-text="t[lang].rentTitle"></h2>
+            <div class="bg-green-100 text-green-800 inline-block px-4 py-2 rounded-lg font-bold mb-12">
+                Deposit: 3,000 THB <span class="mx-2">OR</span> Passport
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl transition text-left">
+                    <div class="aspect-[4/3] bg-gray-200"><img src="image_5.png" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Honda Click 125i</h3>
+                        <p class="text-green-600 font-black text-2xl mb-4">150 - 200 THB</p>
+                        <div class="space-y-2">
+                            <button @click="openWA('scooter')" class="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition" x-text="t[lang].bookNow"></button>
+                            <button @click="copyLine()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-500 transition"><i class="fab fa-line mr-2"></i><span x-text="t[lang].bookNow"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl transition text-left">
+                    <div class="aspect-[4/3] bg-gray-200"><img src="image_1.png" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Honda Click 160i</h3>
+                        <p class="text-green-600 font-black text-2xl mb-4">250 - 300 THB</p>
+                        <div class="space-y-2">
+                            <button @click="openWA('scooter')" class="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition" x-text="t[lang].bookNow"></button>
+                            <button @click="copyLine()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-500 transition"><i class="fab fa-line mr-2"></i><span x-text="t[lang].bookNow"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl transition text-left">
+                    <div class="aspect-[4/3] bg-gray-200"><img src="image_2.png" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Honda PCX 160</h3>
+                        <p class="text-green-600 font-black text-2xl mb-4">400 - 500 THB</p>
+                        <div class="space-y-2">
+                            <button @click="openWA('scooter')" class="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition" x-text="t[lang].bookNow"></button>
+                            <button @click="copyLine()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-500 transition"><i class="fab fa-line mr-2"></i><span x-text="t[lang].bookNow"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button @click="showAll = !showAll" class="text-gray-500 font-bold hover:text-black transition uppercase tracking-widest text-sm">
+                <span x-show="!showAll" x-text="t[lang].seeAll"></span>
+                <span x-show="showAll">Close</span>
+                <i class="fas ml-2" :class="showAll ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button>
+            <div x-show="showAll" x-cloak x-transition class="mt-8 bg-gray-50 rounded-2xl p-6 border border-dashed border-gray-300">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-medium">
+                    <div class="p-2 border-b">Forza 350</div><div class="p-2 border-b">XMAX 300</div>
+                    <div class="p-2 border-b">Scoopy i</div><div class="p-2 border-b">Yamaha Fazzio</div>
+                    <div class="p-2 border-b">Honda ADV 160</div><div class="p-2 border-b">Yamaha Grand Filano</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="laundry" class="py-24 px-4 bg-gray-900 border-y border-white/5">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-black uppercase mb-6 text-green-500" x-text="t[lang].srvLaundry"></h2>
+            <p class="text-gray-400 mb-12">Self-service machines open daily. Clean, fast and cheap.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+                    <p class="text-3xl font-black mb-1">30฿</p>
+                    <p class="text-xs uppercase text-gray-500" x-text="t[lang].washing"></p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+                    <p class="text-3xl font-black mb-1">50฿</p>
+                    <p class="text-xs uppercase text-gray-500" x-text="t[lang].dryer"></p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+                    <p class="text-3xl font-black mb-1">10฿</p>
+                    <p class="text-xs uppercase text-gray-500" x-text="t[lang].detergent"></p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+                    <p class="text-3xl font-black mb-1">10฿</p>
+                    <p class="text-xs uppercase text-gray-500" x-text="t[lang].softener"></p>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button @click="openWA('laundry')" class="bg-green-600 hover:bg-green-500 px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105">
+                    <i class="fab fa-whatsapp mr-2"></i> <span x-text="t[lang].askAvailability"></span>
+                </button>
+                <button @click="copyLine()" class="bg-green-500 hover:bg-green-400 px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105">
+                    <i class="fab fa-line mr-2"></i> <span x-text="t[lang].askAvailability"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="chill" class="py-24 px-4 bg-gray-950">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
+                <div>
+                    <h2 class="text-4xl font-black uppercase mb-6 text-green-500" x-text="t[lang].weedTitle"></h2>
+                    <p class="text-xl text-gray-400 mb-8 leading-relaxed" x-text="t[lang].weedDesc"></p>
+                    
+                    <div class="bg-green-900/20 border border-green-500/30 p-8 rounded-3xl mb-8">
+                        <p class="text-4xl font-black mb-2" x-text="t[lang].priceWeed"></p>
+                        <p class="text-green-400 uppercase tracking-widest text-sm" x-text="t[lang].qualityTag"></p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col items-center">
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="aspect-square rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10">
+                            <img src="Best Buds in Krabi 1.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square rounded-2xl overflow-hidden mt-12 shadow-2xl border-2 border-white/10 bg-black">
+                            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                                <source src="Best Buds in Krabi 2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           <div class="border-t border-white/10 pt-16 text-center">
+                <h3 class="text-center text-xl font-black uppercase tracking-[0.3em] mb-12 text-gray-500">Our Selection</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-left">
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Premium Weed.jpg" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Flower</p>
+                        <p class="text-sm font-bold">Premium Weed</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-purple-500/50 transition">
+                        <img src="Purple Weed.jpg" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-purple-500 mb-1">Rare</p>
+                        <p class="text-sm font-bold">Purple Weed</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-blue-500/50 transition">
+                        <img src="Blue Weed.jpg" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-blue-500 mb-1">Rare</p>
+                        <p class="text-sm font-bold">Blue Weed</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Indica Joints.png" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Pre-roll</p>
+                        <p class="text-sm font-bold">Indica Joints</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Sativa Joints.png" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Pre-roll</p>
+                        <p class="text-sm font-bold">Sativa Joints</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Space Brownies.JPG" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Edible</p>
+                        <p class="text-sm font-bold">Space Brownies</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Brownie Cookies.JPG" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Edible</p>
+                        <p class="text-sm font-bold">Space Cookies</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Space Biscuits.JPG" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Edible</p>
+                        <p class="text-sm font-bold">Space Biscuits</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Premium Hash.JPG" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Concentrate</p>
+                        <p class="text-sm font-bold">Premium Hash</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Multicolor reflections Bang.png" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Glass</p>
+                        <p class="text-sm font-bold">Bangs & Pipes</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Special Bangkok Bang.png" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Glass</p>
+                        <p class="text-sm font-bold">Bangkok Special Bang</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Cold Sodas.jpg" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Drink</p>
+                        <p class="text-sm font-bold">Cold Sodas</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <img src="Goodies.jpg" class="w-full rounded-lg mb-3">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Shop</p>
+                        <p class="text-sm font-bold">Goodies</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                        <div class="flex flex-col space-y-2 mb-3">
+                            <img src="Rolling Skins & Lighters.png" class="w-full rounded-lg">
+                            <img src="Rolling Skins & Lighters 2.png" class="w-full rounded-lg">
+                        </div>
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Usefuls</p>
+                        <p class="text-sm font-bold">Rolling Skins & Lighters</p>
+                    </div>
+                </div>
+                
+                <div class="mt-12 flex flex-col md:flex-row justify-center items-center gap-4">
+                    <button @click="openWA('weed')" class="w-full max-w-sm bg-green-600 hover:bg-green-500 px-8 py-4 rounded-full font-black text-xl transition shadow-xl transform hover:scale-105 uppercase tracking-widest">
+                        <i class="fab fa-whatsapp mr-2"></i> <span x-text="t[lang].askMenu"></span>
+                    </button>
+                    <button @click="copyLine()" class="w-full max-w-sm bg-green-500 hover:bg-green-400 px-8 py-4 rounded-full font-black text-xl transition shadow-xl transform hover:scale-105 uppercase tracking-widest">
+                        <i class="fab fa-line mr-2"></i> <span x-text="t[lang].askMenu"></span>
+                    </button>
+                </div>
+            </div>        
+        </div>
+    </section>
+
+    <section id="location" class="py-24 px-4 bg-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black uppercase mb-4" x-text="t[lang].locTitle"></h2>
+                <p class="text-gray-400" x-text="t[lang].locAddress"></p>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gray-800">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.1582855598687!2d98.9168!3d8.064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMDMnNTAuNCJOIDk4wrA1NScwMC41IkU!5e0!3m2!1sen!2sth!4v1700000000000!5m2!1sen!2sth" width="100%" height="450" style="border:0;" loading="lazy"></iframe>
+                <div class="p-8 text-center bg-gray-800">
+                    <button @click="openMaps()" class="inline-flex items-center space-x-3 bg-white text-black px-10 py-4 rounded-full font-black text-lg hover:bg-green-500 hover:text-white transition transform hover:scale-105">
+                        <i class="fas fa-location-arrow"></i><span x-text="t[lang].btnDirections"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="favorites" 
+             class="py-32 bg-gray-950 overflow-hidden" 
+             x-data="{ visible: false }" 
+             x-intersect:enter="visible = true"
+             :class="visible ? 'is-visible' : ''">
+        
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="animation-container">
+                <div class="photo-card photo-left border-4 border-white shadow-2xl rounded-xl overflow-hidden bg-gray-800">
+                    <img src="Team 1.jpg" class="w-full h-auto">
+                </div>
+
+                <div class="photo-card photo-right border-4 border-white shadow-2xl rounded-xl overflow-hidden bg-gray-800">
+                    <img src="Team 2.jpg" class="w-full h-auto">
+                </div>
+
+                <div class="text-center z-30 max-w-xl relative">
+                    <h2 class="text-4xl md:text-6xl font-black uppercase text-white mb-6 leading-tight drop-shadow-2xl" x-text="t[lang].favTitle"></h2>
+                    <div class="w-20 h-2 bg-green-500 mx-auto mb-6"></div>
+                    <p class="text-lg md:text-xl text-gray-300 font-medium px-4" x-text="t[lang].favSub"></p>
+                </div>
+            </div>
+        </div>
+    </section> 
+
+    <footer class="py-12 text-center px-4 bg-black border-t border-white/10">
+        <div class="flex justify-center items-center space-x-8 mb-8">
+            <a :href="links.tiktok" target="_blank" class="text-3xl hover:text-green-500 transition"><i class="fab fa-tiktok"></i></a>
+            <a :href="links.instagram" target="_blank" class="text-3xl hover:text-green-500 transition"><i class="fab fa-instagram"></i></a>
+            <button @click="copyLine()" class="text-3xl hover:text-green-500 transition"><i class="fab fa-line"></i></button>
+        </div>
+        <p class="text-gray-500 text-sm">© 2024 Big Bike & Cannabis Krabi Town</p>
+    </footer>
+
+    <div class="fixed bottom-6 right-6 flex flex-col space-y-4 z-50">
+        <button @click="copyLine()" class="bg-green-600 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition border-2 border-white/20">
+            <i class="fab fa-line text-3xl"></i>
+        </button>
+        <a @click="openWA('general')" class="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition border-2 border-white/20 cursor-pointer">
+            <i class="fab fa-whatsapp text-3xl"></i>
+        </a>
+    </div>
+
+    <div x-show="toast" x-transition x-cloak
+         class="fixed bottom-24 right-6 z-50 bg-black/90 border border-white/10 text-white px-6 py-3 rounded-xl shadow-2xl"
+         x-text="toast"></div>
+
+    <script>
+        function languageManager() {
+            return {
+                lang: localStorage.getItem('userLang') || 'en',
+                toast: false,
+                links: {
+                    whatsapp: "66823784685",
+                    line: "https://line.me/ti/p/BKca8Bm4pw",
+                    tiktok: "https://www.tiktok.com/@weedandhostel_krabi",
+                    instagram: "https://www.instagram.com/weedandhostel_krabi/"
+                },
+                setLang(l) { 
+                    this.lang = l; 
+                    localStorage.setItem('userLang', l); 
+                },
+                copyLine() {
+                    const lineLink = this.links.line;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(lineLink);
+                        this.toast = this.t[this.lang].copiedLine;
+                        setTimeout(() => { this.toast = false }, 3000);
+                    }
+                    window.open(lineLink, '_blank');
+                },
+                openWA(type) {
+                    const msg = this.t[this.lang].waMessages[type] || this.t[this.lang].waMessages.general;
+                    window.open(`https://wa.me/${this.links.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+                },
+                openMaps() {
+                    const addr = "6 Khongkha Rd, Pak Nam, Krabi 81000";
+                    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`, '_blank');
+                },
+                t: {
+                    en: {
+                        heroTitle: "High Quality. Cheap Prices.",
+                        heroSub: "The best scooters and premium weed in Krabi Town. No tourist traps, just local vibes.",
+                        btnRent: "Get our Contact",
+                        btnDirections: "Get Directions",
+                        srvBike: "Scooters", srvWeed: "Weed Shop", srvLaundry: "Laundry", srvHotel: "Hotel",
+                        rentTitle: "Premium Rentals",
+                        bookNow: "Reserve Now",
+                        seeAll: "See all models",
+                        favTitle: "Foreigners and Locals favorite choice!",
+                        favSub: "Join the community where quality meets Krabi's authentic lifestyle.",
+                        weedTitle: "BEST BUDS IN KRABI",
+                        weedDesc: "From farm to your hands. Our lounge is the perfect spot for locals and travelers to meet over a game of snooker or chillout in the AC lounge!",
+                        priceWeed: "From 100 THB / g",
+                        qualityTag: "Premium Quality",
+                        askMenu: "GET YOURS NOW",
+                        washing: "Washing", dryer: "Dryer", detergent: "Soap", softener: "Softener",
+                        askAvailability: "Check availability",
+                        locTitle: "Visit Our Shop",
+                        locAddress: "6 Khongkha Rd, Krabi Town 81000",
+                        copiedLine: "LINE Link Copied! ✅",
+                        waMessages: {
+                            scooter: "Hi! I want to rent a scooter.\n\nDate: __ / __\nDuration: __ days\nModel: __\nPickup time: __\nName: __",
+                            weed: "Hi! I want to order some products.\n\nI'm interested in: __\nBudget: __ THB\nName: __",
+                            laundry: "Hi! I want to use the self-service laundry.\n\nAre machines available now?\nName: __",
+                            hotel: "Hi! I want to book a room.\n\nDates: __ to __\nPeople: __\nName: __",
+                            general: "Hi! I'm interested in your services."
+                        }
+                    },
+                    fr: {
+                        heroTitle: "Haute Qualité. Petits Prix.",
+                        heroSub: "Les meilleurs scooters et weed premium à Krabi. Pas d'arnaques, juste des prix locaux.",
+                        btnRent: "Louer un Scooter",
+                        btnDirections: "Itinéraire",
+                        srvBike: "Scooters", srvWeed: "Weed Shop", srvLaundry: "Laverie", srvHotel: "Hôtel",
+                        rentTitle: "Location Premium",
+                        bookNow: "Réserver Now",
+                        seeAll: "Voir tous les modèles",
+                        favTitle: "Le choix favori des voyageurs et locaux !",
+                        favSub: "Rejoignez la communauté où la qualité rencontre le style authentique de Krabi.",
+                        weedTitle: "BEST BUDS IN KRABI",
+                        weedDesc: "De la ferme à vos mains. Notre salon est l'endroit idéal pour se rencontrer autour d'un billard ou se détendre avec la clim !",
+                        priceWeed: "Dès 100 THB / g",
+                        qualityTag: "Qualité Premium",
+                        askMenu: "GET YOURS NOW",
+                        washing: "Lavage", dryer: "Séchage", detergent: "Lessive", softener: "Soupline",
+                        askAvailability: "Vérifier dispo",
+                        locTitle: "Où nous trouver",
+                        locAddress: "6 Khongkha Rd, Krabi Town 81000",
+                        copiedLine: "Lien LINE copié ! ✅",
+                        waMessages: {
+                            scooter: "Salut ! Je veux louer un scooter.\n\nDate : __ / __\nDurée : __ jours\nModèle : __\nHeure : __\nNom : __",
+                            weed: "Salut ! Je souhaite commander.\n\nProduits : __\nBudget : __ THB\nNom : __",
+                            laundry: "Salut ! Je veux utiliser la laverie automatique.\n\nDes machines sont-elles disponibles ?\nNom : __",
+                            hotel: "Salut ! Je veux réserver une chambre.\n\nDates : __ au __\nPersonnes : __\nNom : __",
+                            general: "Salut ! Je suis intéressé par vos services."
+                        }
+                    },
+                    es: {
+                        heroTitle: "Alta Calidad. Precios Bajos.",
+                        heroSub: "Los mejores scooters y cannabis premium en Krabi Town. Sin trampas para turistas, solo ambiente local.",
+                        btnRent: "Alquilar un Scooter",
+                        btnDirections: "Cómo llegar",
+                        srvBike: "Scooters", srvWeed: "Weed Shop", srvLaundry: "Lavandería", srvHotel: "Hotel",
+                        rentTitle: "Alquileres Premium",
+                        bookNow: "Reservar Ahora",
+                        seeAll: "Ver todos los modelos",
+                        favTitle: "¡La opción favorita de extranjeros y locales!",
+                        favSub: "Únete a la comunidad donde la qualité se encuentra con el estilo de vida auténtico de Krabi.",
+                        weedTitle: "LOS MEJORES COGOLLOS DE KRABI",
+                        weedDesc: "De la granja a tus manos. ¡Nuestro salón es el lugar perfecto para conocer gente sobre una partida de billar o relajarse con aire acondicionado!",
+                        priceWeed: "Desde 100 THB / g",
+                        qualityTag: "Calidad Premium",
+                        askMenu: "¡CONSIGUE EL TUYO!",
+                        washing: "Lavado", dryer: "Secado", detergent: "Jabón", softener: "Suavizante",
+                        askAvailability: "Consultar disponibilidad",
+                        locTitle: "Visita Nuestra Tienda",
+                        locAddress: "6 Khongkha Rd, Krabi Town 81000",
+                        copiedLine: "¡Enlace de LINE copiado! ✅",
+                        waMessages: {
+                            scooter: "¡Hola! Quiero alquilar un scooter.\n\nFecha: __ / __\nDuración: __ días\nModelo: __\nHora de recogida: __\nNombre: __",
+                            weed: "¡Hola! Quiero hacer un pedido.\n\nEstoy interesado en: __\nPresupuesto: __ THB\nNombre: __",
+                            laundry: "¡Hola! Quiero usar la lavandería de autoservicio.\n\n¿Hay máquinas disponibles ahora?\nNombre: __",
+                            hotel: "¡Hola! Quiero reservar una habitación.\n\nFechas: __ al __\nPersonas: __\nNombre: __",
+                            general: "¡Hola! Estoy interesado en sus servicios."
+                        }
+                    },
+                    th: {
+                        heroTitle: "คุณภาพสูง ราคาถูก",
+                        heroSub: "รถเช่าที่ดีที่สุดและกัญชาพรีเมียมในกระบี่ บรรยากาศเป็นกันเอง ราคาคนไทย",
+                        btnRent: "จองรถมอเตอร์ไซค์",
+                        btnDirections: "ขอเส้นทาง",
+                        srvBike: "รถเช่า", srvWeed: "ร้านกัญชา", srvLaundry: "ซักรีด", srvHotel: "โรงแรม",
+                        rentTitle: "รถเช่าคุณภาพ",
+                        bookNow: "จองเลย",
+                        seeAll: "ดูรุ่นทั้งหมด",
+                        favTitle: "ตัวเลือกยอดนิยมของทั้งชาวต่างชาติและชาวไทย!",
+                        favSub: "เข้าร่วมชุมชนที่คุณภาพมาพบกับวิถีชีวิตที่แท้จริงของกระบี่",
+                        weedTitle: "BEST BUDS IN KRABI",
+                        weedDesc: "จากฟาร์มถึงมือคุณ มีที่นั่งเล่นแอร์เย็นๆ และโต๊ะสนุ๊กเกอร์",
+                        priceWeed: "เริ่ม 100 บาท / กรัม",
+                        qualityTag: "รับประกันคุณภาพ",
+                        askMenu: "GET YOURS NOW",
+                        washing: "ซัก", dryer: "อบ", detergent: "ผงซักฟอก", softener: "น้ำยาปรับผ้านุ่ม",
+                        askAvailability: "สอบถามเครื่องว่าง",
+                        locTitle: "ที่ตั้งร้าน",
+                        locAddress: "6 ถนนคงคา ต.ปากน้ำ อ.เมืองกระบี่ 81000",
+                        copiedLine: "คัดลอกลิงก์ LINE แล้ว! ✅",
+                        waMessages: {
+                            scooter: "สวัสดี! ฉันต้องการเช่ารถสกู๊ตเตอร์\n\nวันที่: __ / __\nระยะเวลา: __ วัน\nชื่อ: __",
+                            weed: "สวัสดี! ฉันต้องการสั่งสินค้า\n\nสนใจ: __\nงบประมาณ: __ บาท\nชื่อ: __",
+                            laundry: "สวัสดี! มีเครื่องซักผ้าว่างไหม?\nชื่อ: __",
+                            hotel: "สวัสดี! จองห้องพัก\nวันที่: __ ถึง __\nชื่อ: __",
+                            general: "สวัสดี! ฉันสนใจบริการของคุณ"
+                        }
+                    },
+                    de: {
+                        heroTitle: "Beste Qualität. Günstig.",
+                        heroSub: "Die besten Roller und Weed in Krabi Town. Keine Touristenfallen.",
+                        btnRent: "Roller Buchen",
+                        btnDirections: "Anfahrt",
+                        srvBike: "Roller", srvWeed: "Weed Shop", srvLaundry: "Wäsche", srvHotel: "Hotel",
+                        rentTitle: "Premium Verleih",
+                        bookNow: "Jetzt Buchen",
+                        seeAll: "Alle Modelle",
+                        favTitle: "Beliebt bei Touristen und Einheimischen!",
+                        favSub: "Werde Teil der Community in Krabi.",
+                        weedTitle: "BEST BUDS IN KRABI",
+                        weedDesc: "Vom Feld direkt zu dir. Der perfekte Ort, um Leute beim Billard zu treffen oder in der klimatisierten Lounge zu entspannen!",
+                        priceWeed: "Ab 100 THB / g",
+                        qualityTag: "Premium Qualität",
+                        askMenu: "GET YOURS NOW",
+                        washing: "Waschen", dryer: "Trocknen", detergent: "Seife", softener: "Weichspüler",
+                        askAvailability: "Verfügbarkeit prüfen",
+                        locTitle: "Standort",
+                        locAddress: "6 Khongkha Rd, Krabi Town 81000",
+                        copiedLine: "LINE Link Copiert! ✅",
+                        waMessages: {
+                            scooter: "Hallo! Ich möchte einen Roller mieten.\n\nDatum: __ / __\nDauer: __ Tage\nName: __",
+                            weed: "Hallo! Ich möchte bestellen.\n\nInteressiert an: __\nBudget: __ THB\nName: __",
+                            laundry: "Hallo! Sind Maschinen frei?\nName: __",
+                            hotel: "Hallo! Zimmerbuchung\nDaten: __ bis __\nName: __",
+                            general: "Hallo! Ich bin interessiert an Ihren Services."
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
