@@ -60,10 +60,10 @@
                     <a :href="links.tiktok" target="_blank" class="hover:text-green-500 transition"><i class="fab fa-tiktok"></i></a>
                     <a :href="links.instagram" target="_blank" class="hover:text-green-500 transition"><i class="fab fa-instagram"></i></a>
                 </div>
-                <div class="flex space-x-1 bg-white/10 p-1 rounded-full">
-                    <template x-for="l in ['en', 'th', 'fr', 'de', 'es']">
-                        <button @click="setLang(l)" class="w-8 h-8 rounded-full overflow-hidden border-2 transition" :class="lang === l ? 'border-green-500' : 'border-transparent'">
-                            <img :src="'https://flagcdn.com/w40/' + (l === 'en' ? 'gb' : (l === 'de' ? 'de' : (l === 'fr' ? 'fr' : (l === 'es' ? 'es' : 'th')))) + '.png'" class="w-full h-full object-cover">
+                <div class="flex space-x-1 bg-white/10 p-1 rounded-full overflow-x-auto">
+                    <template x-for="l in ['en', 'th', 'fr', 'de', 'es', 'ru']">
+                        <button @click="setLang(l)" class="w-8 h-8 rounded-full overflow-hidden border-2 transition flex-shrink-0" :class="lang === l ? 'border-green-500' : 'border-transparent'">
+                            <img :src="'https://flagcdn.com/w40/' + (l === 'en' ? 'gb' : (l === 'de' ? 'de' : (l === 'fr' ? 'fr' : (l === 'es' ? 'es' : (l === 'ru' ? 'ru' : 'th'))))) + '.png'" class="w-full h-full object-cover">
                         </button>
                     </template>
                 </div>
@@ -75,9 +75,8 @@
         <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover object-[center_10%] z-0">
             <source src="Hero Section.mp4" type="video/mp4">
         </video>
-
         <div class="absolute inset-0 hero-overlay z-10"></div>
-
+        
         <div class="relative z-20 max-w-4xl">
             <div class="inline-block bg-green-600/20 text-green-400 px-4 py-1 rounded-full text-sm font-bold mb-6 border border-green-500/30">
                 <i class="fas fa-id-card-alt mr-2"></i> No Passport Required Option / Safe & Trusted
@@ -162,7 +161,7 @@
 
             <button @click="showAll = !showAll" class="text-gray-500 font-bold hover:text-black transition uppercase tracking-widest text-sm">
                 <span x-show="!showAll" x-text="t[lang].seeAll"></span>
-                <span x-show="showAll">Close</span>
+                <span x-show="showAll" x-text="t[lang].close"></span>
                 <i class="fas ml-2" :class="showAll ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
             </button>
             <div x-show="showAll" x-cloak x-transition class="mt-8 bg-gray-50 rounded-2xl p-6 border border-dashed border-gray-300">
@@ -178,7 +177,7 @@
     <section id="laundry" class="py-24 px-4 bg-gray-900 border-y border-white/5">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-4xl font-black uppercase mb-6 text-green-500" x-text="t[lang].srvLaundry"></h2>
-            <p class="text-gray-400 mb-12">Self-service machines open daily. Clean, fast and cheap.</p>
+            <p class="text-gray-400 mb-12" x-text="t[lang].laundryDesc"></p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                 <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
                     <p class="text-3xl font-black mb-1">30฿</p>
@@ -317,7 +316,7 @@
                     <button @click="openWA('weed')" class="w-full max-w-sm bg-green-600 hover:bg-green-500 px-8 py-4 rounded-full font-black text-xl transition shadow-xl transform hover:scale-105 uppercase tracking-widest">
                         <i class="fab fa-whatsapp mr-2"></i> <span x-text="t[lang].askMenu"></span>
                     </button>
-                    <button @click="copyLine()" class="w-full max-w-sm bg-green-500 hover:bg-green-400 px-8 py-4 rounded-full font-black text-xl transition shadow-xl transform hover:scale-105 uppercase tracking-widest">
+                    <button @click="copyLine()" class="w-full max-w-sm bg-green-500 hover:bg-green-400 px-8 py-4 rounded-full font-bold text-xl transition shadow-xl transform hover:scale-105 uppercase tracking-widest">
                         <i class="fab fa-line mr-2"></i> <span x-text="t[lang].askMenu"></span>
                     </button>
                 </div>
@@ -425,12 +424,13 @@
                     en: {
                         heroTitle: "High Quality. Cheap Prices.",
                         heroSub: "The best scooters and premium weed in Krabi Town. No tourist traps, just local vibes.",
-                        btnRent: "Get our Contact",
+                        btnRent: "Get Our Contact",
                         btnDirections: "Get Directions",
                         srvBike: "Scooters", srvWeed: "Weed Shop", srvLaundry: "Laundry", srvHotel: "Hotel",
                         rentTitle: "Premium Rentals",
                         bookNow: "Reserve Now",
                         seeAll: "See all models",
+                        close: "Close",
                         favTitle: "Foreigners and Locals favorite choice!",
                         favSub: "Join the community where quality meets Krabi's authentic lifestyle.",
                         weedTitle: "BEST BUDS IN KRABI",
@@ -438,6 +438,7 @@
                         priceWeed: "From 100 THB / g",
                         qualityTag: "Premium Quality",
                         askMenu: "GET YOURS NOW",
+                        laundryDesc: "Self-service machines open daily. Clean, fast and cheap.",
                         washing: "Washing", dryer: "Dryer", detergent: "Soap", softener: "Softener",
                         askAvailability: "Check availability",
                         locTitle: "Visit Our Shop",
@@ -460,6 +461,7 @@
                         rentTitle: "Location Premium",
                         bookNow: "Réserver Now",
                         seeAll: "Voir tous les modèles",
+                        close: "Fermer",
                         favTitle: "Le choix favori des voyageurs et locaux !",
                         favSub: "Rejoignez la communauté où la qualité rencontre le style authentique de Krabi.",
                         weedTitle: "BEST BUDS IN KRABI",
@@ -467,6 +469,7 @@
                         priceWeed: "Dès 100 THB / g",
                         qualityTag: "Qualité Premium",
                         askMenu: "GET YOURS NOW",
+                        laundryDesc: "Machines en libre-service ouvertes tous les jours. Propre, rapide et pas cher.",
                         washing: "Lavage", dryer: "Séchage", detergent: "Lessive", softener: "Soupline",
                         askAvailability: "Vérifier dispo",
                         locTitle: "Où nous trouver",
@@ -489,6 +492,7 @@
                         rentTitle: "Alquileres Premium",
                         bookNow: "Reservar Ahora",
                         seeAll: "Ver todos los modelos",
+                        close: "Cerrar",
                         favTitle: "¡La opción favorita de extranjeros y locales!",
                         favSub: "Únete a la comunidad donde la qualité se encuentra con el estilo de vida auténtico de Krabi.",
                         weedTitle: "LOS MEJORES COGOLLOS DE KRABI",
@@ -496,6 +500,7 @@
                         priceWeed: "Desde 100 THB / g",
                         qualityTag: "Calidad Premium",
                         askMenu: "¡CONSIGUE EL TUYO!",
+                        laundryDesc: "Lavandería de autoservicio abierta a diario. Limpio, rápido y barato.",
                         washing: "Lavado", dryer: "Secado", detergent: "Jabón", softener: "Suavizante",
                         askAvailability: "Consultar disponibilidad",
                         locTitle: "Visita Nuestra Tienda",
@@ -518,6 +523,7 @@
                         rentTitle: "รถเช่าคุณภาพ",
                         bookNow: "จองเลย",
                         seeAll: "ดูรุ่นทั้งหมด",
+                        close: "ปิด",
                         favTitle: "ตัวเลือกยอดนิยมของทั้งชาวต่างชาติและชาวไทย!",
                         favSub: "เข้าร่วมชุมชนที่คุณภาพมาพบกับวิถีชีวิตที่แท้จริงของกระบี่",
                         weedTitle: "BEST BUDS IN KRABI",
@@ -525,6 +531,7 @@
                         priceWeed: "เริ่ม 100 บาท / กรัม",
                         qualityTag: "รับประกันคุณภาพ",
                         askMenu: "GET YOURS NOW",
+                        laundryDesc: "เครื่องซักผ้าหยอดเหรียญ เปิดทุกวัน สะอาด รวดเร็ว ราคาถูก",
                         washing: "ซัก", dryer: "อบ", detergent: "ผงซักฟอก", softener: "น้ำยาปรับผ้านุ่ม",
                         askAvailability: "สอบถามเครื่องว่าง",
                         locTitle: "ที่ตั้งร้าน",
@@ -547,6 +554,7 @@
                         rentTitle: "Premium Verleih",
                         bookNow: "Jetzt Buchen",
                         seeAll: "Alle Modelle",
+                        close: "Schließen",
                         favTitle: "Beliebt bei Touristen und Einheimischen!",
                         favSub: "Werde Teil der Community in Krabi.",
                         weedTitle: "BEST BUDS IN KRABI",
@@ -554,6 +562,7 @@
                         priceWeed: "Ab 100 THB / g",
                         qualityTag: "Premium Qualität",
                         askMenu: "GET YOURS NOW",
+                        laundryDesc: "SB-Waschsalon täglich geöffnet. Sauber, schnell und günstig.",
                         washing: "Waschen", dryer: "Trocknen", detergent: "Seife", softener: "Weichspüler",
                         askAvailability: "Verfügbarkeit prüfen",
                         locTitle: "Standort",
@@ -565,6 +574,37 @@
                             laundry: "Hallo! Sind Maschinen frei?\nName: __",
                             hotel: "Hallo! Zimmerbuchung\nDaten: __ bis __\nName: __",
                             general: "Hallo! Ich bin interessiert an Ihren Services."
+                        }
+                    },
+                    ru: {
+                        heroTitle: "Высокое качество. Низкие цены.",
+                        heroSub: "Лучшие скутеры и премиальный каннабис в Краби-Тауне. Без туристических ловушек, только местная атмосфера.",
+                        btnRent: "Аренда скутера",
+                        btnDirections: "Маршрут",
+                        srvBike: "Скутеры", srvWeed: "Магазин каннабиса", srvLaundry: "Прачечная", srvHotel: "Отель",
+                        rentTitle: "Премиальная Аренда",
+                        bookNow: "Забронировать",
+                        seeAll: "Все модели",
+                        close: "Закрыть",
+                        favTitle: "Любимый выбор туристов и местных!",
+                        favSub: "Присоединяйтесь к сообществу, где качество сочетается с аутентичным стилем жизни Краби.",
+                        weedTitle: "ЛУЧШИЕ ШИШКИ В КРАБИ",
+                        weedDesc: "С фермы прямо в ваши руки. Наш лаундж — идеальное место для встреч за игрой в бильярд или отдыха в прохладе с кондиционером!",
+                        priceWeed: "От 100 бат / г",
+                        qualityTag: "Премиальное качество",
+                        askMenu: "ПОЛУЧИТЬ СЕЙЧАС",
+                        laundryDesc: "Прачечная самообслуживания открыта ежедневно. Чисто, быстро и дешево.",
+                        washing: "Стирка", dryer: "Сушка", detergent: "Мыло", softener: "Кондиционер",
+                        askAvailability: "Проверить наличие",
+                        locTitle: "Наш магазин",
+                        locAddress: "6 Khongkha Rd, Krabi Town 81000",
+                        copiedLine: "Ссылка LINE скопирована! ✅",
+                        waMessages: {
+                            scooter: "Привет! Я хочу арендовать скутер.\n\nДата: __ / __\nСрок: __ дней\nМодель: __\nИмя: __",
+                            weed: "Привет! Я хочу сделать заказ.\n\nМеня интересует: __\nБюджет: __ бат\nИмя: __",
+                            laundry: "Привет! Я хочу воспользоваться прачечной.\n\nЕсть ли свободные машины?\nИмя: __",
+                            hotel: "Привет! Я хочу забронировать номер.\n\nДаты: с __ по __\nИмя: __",
+                            general: "Привет! Меня интересуют ваши услуги."
                         }
                     }
                 }
